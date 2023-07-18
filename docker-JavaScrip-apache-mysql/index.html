@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>รายการ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #inputForm {
+      margin-bottom: 10px;
+    }
+
+    #itemList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .item span {
+      margin-right: 8px;
+    }
+
+    .deleteButton {
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>รายการ</h1>
+
+  <form id="inputForm">
+    <input type="text" id="inputItem" placeholder="เพิ่มรายการ">
+    <button type="submit">เพิ่ม</button>
+  </form>
+
+  <ul id="itemList"></ul>
+
+  <script>
+    // รับอ้างอิงถึงฟอร์มและรายการ
+    const form = document.getElementById('inputForm');
+    const itemList = document.getElementById('itemList');
+
+    // ระบุฟังก์ชันเพิ่มรายการ
+    function addItem(event) {
+      event.preventDefault(); // หยุดการส่งฟอร์มที่เป็นค่าเริ่มต้น
+
+      const input = document.getElementById('inputItem');
+      const itemText = input.value.trim(); // รับข้อมูลจากฟอร์มและล้างช่องว่างด้านหน้าและด้านหลัง
+
+      if (itemText !== '') { // ตรวจสอบว่ามีข้อมูลใหม่ที่ต้องเพิ่มหรือไม่
+        const newItem = document.createElement('li');
+        newItem.classList.add('item');
+        newItem.innerHTML = `
+          <span>${itemText}</span>
+          <button class="deleteButton">ลบ</button>
+        `;
+
+        itemList.appendChild(newItem); // เพิ่มรายการใหม่ลงในรายการ
+
+        input.value = ''; // เคลียร์ค่าในช่องข้อมูล
+
+        const deleteButton = newItem.querySelector('.deleteButton');
+        deleteButton.addEventListener('click', deleteItem); // เพิ่มการฟังก์ชันลบเมื่อปุ่มลบถูกคลิก
+      }
+    }
+
+    // ระบุฟังก์ชันลบรายการ
+    function deleteItem(event) {
+      const item = event.target.parentNode; // รับอ้างอิงถึงรายการที่ต้องการลบ
+      itemList.removeChild(item); // ลบรายการออกจากรายการ
+    }
+
+    // เพิ่มการฟังก์ชันสำหรับการส่งฟอร์ม
+    form.addEventListener('submit', addItem);
+
+  </script>
+</body>
+</html>
